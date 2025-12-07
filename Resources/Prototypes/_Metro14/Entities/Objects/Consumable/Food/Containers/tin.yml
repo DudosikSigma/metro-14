@@ -1,0 +1,251 @@
+# Base
+
+# uses "icon" and "icon-open" states for the main item.
+# trash prototypes use "trash" state
+- type: entity
+  abstract: true
+  parent: [FoodBase, FoodOpenableBase]
+  id: M14FoodTinBase
+  name: tin
+  description: A tin of something, sealed tight.
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 15
+  - type: Openable
+    openableByHand: false
+    sound:
+      path: /Audio/Items/can_open3.ogg
+  - type: Destructible
+    thresholds:
+    # if tinned food is nuked just delete it, no sound
+    - trigger:
+        !type:DamageTrigger
+        damage: 50
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
+    - trigger:
+        !type:DamageTrigger
+        damage: 6
+      behaviors:
+      - !type:OpenBehavior
+  - type: Item
+    sprite: Objects/Consumable/Food/snacks.rsi
+    heldPrefix: packet
+    size: Small
+  - type: DamageOnLand
+    damage:
+      types:
+        Blunt: 3
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Blunt: 3
+  - type: Damageable
+    damageContainer: Inorganic
+  - type: StaticPrice
+    price: 50
+
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: M14FoodTinBaseTrash
+  name: empty tin
+  description: An empty tin. Could get a bit of metal from this.
+  components:
+  - type: Sprite
+    state: trash
+  - type: Item
+    sprite: Objects/Consumable/Food/snacks.rsi
+    heldPrefix: packet
+    size: Small
+  - type: PhysicalComposition
+    materialComposition:
+      Steel: 100
+  - type: Tag
+    tags:
+    - Trash
+
+# Tins
+
+- type: entity
+  parent: M14FoodTinBase
+  id: M14FoodTinCucumber
+  name: tinned cucumbers
+  description: tinned cucumbers. Old, very old cucumbers. Surprisingly, they're still edible.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/cucumber.rsi
+  # the convenient pull tab
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 9
+        - ReagentId: Vitamin
+          Quantity: 6
+  - type: Openable
+    openableByHand: true
+  - type: Edible
+    trash:
+    - M14FoodTinCucumberTrash
+
+- type: entity
+  parent: M14FoodTinBaseTrash
+  id: M14FoodTinCucumberTrash
+  name: tinned cucumbers
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/cucumber.rsi
+
+#
+
+- type: entity
+  parent: M14FoodTinBase
+  id: M14FoodTinGenericCan
+  name: tinned generic can
+  description: An old tin can. The label has long since fallen off, so you don't know what's inside. Is it safe to eat?
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/generic_can.rsi
+  # the convenient pull tab
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 9
+        - ReagentId: Protein
+          Quantity: 5
+        - ReagentId: Toxin
+          Quantity: 1.5
+  - type: Openable
+    openableByHand: true
+  - type: Edible
+    trash:
+    - M14FoodTinGenericCanTrash
+  - type: Tag
+    tags:
+    - Meat
+
+- type: entity
+  parent: M14FoodTinBaseTrash
+  id: M14FoodTinGenericCanTrash
+  name: tinned generic can
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/generic_can.rsi
+
+#
+
+- type: entity
+  parent: M14FoodTinBase
+  id: M14FoodTinPea
+  name: tinned pea
+  description: tinned pea. Old, very old pea. Surprisingly, they're still edible.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/pea.rsi
+  # the convenient pull tab
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 10
+        - ReagentId: Vitamin
+          Quantity: 5
+  - type: Openable
+    openableByHand: true
+  - type: Edible
+    trash:
+    - M14FoodTinPeaTrash
+
+- type: entity
+  parent: M14FoodTinBaseTrash
+  id: M14FoodTinPeaTrash
+  name: tinned pea
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/pea.rsi
+  
+#
+
+- type: entity
+  parent: M14FoodTinBase
+  id: M14FoodTinPorknbean
+  name: tinned porknbean
+  description: tinned porknbean. Old, very old porknbean. Surprisingly, they're still edible.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/porknbean.rsi
+  # the convenient pull tab
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 2
+  - type: Openable
+    openableByHand: true
+  - type: Edible
+    trash:
+    - M14FoodTinPorknbeanTrash
+
+- type: entity
+  parent: M14FoodTinBaseTrash
+  id: M14FoodTinPorknbeanTrash
+  name: tinned porknbean
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/porknbean.rsi
+
+#
+
+- type: entity
+  parent: M14FoodTinBase
+  id: M14FoodTinSaury
+  name: tinned saury
+  description: tinned saury. Old, very old saury. Surprisingly, they're still edible.
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/seafood.rsi
+  # the convenient pull tab
+  - type: SolutionContainerManager
+    solutions:
+      food:
+        maxVol: 20
+        reagents:
+        - ReagentId: Nutriment
+          Quantity: 8
+        - ReagentId: Vitamin
+          Quantity: 5
+        - ReagentId: Protein
+          Quantity: 2
+  - type: Openable
+    openableByHand: true
+  - type: Edible
+    trash:
+    - FoodTinSauryTrash
+
+- type: entity
+  parent: M14FoodTinBaseTrash
+  id: M14FoodTinSauryTrash
+  name: tinned saury
+  components:
+  - type: Sprite
+    sprite: _Metro14/Objects/Consumable/Food/seafood.rsi
