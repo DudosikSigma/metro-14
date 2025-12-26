@@ -1,14 +1,22 @@
+using System.Numerics;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 using Content.Server.Chat.Managers;
 using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
 using Content.Shared.Administration.Systems;
+using Content.Shared.Camera;
 using Content.Shared.FixedPoint;
+using Content.Shared.Hands;
+using Content.Shared.Item;
 using Content.Shared.Mobs;
-using Content.Shared.Mobs.Systems;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.Popups;
 using Content.Shared.Stunnable;
+using Content.Shared.Wieldable;
+using Content.Shared.Wieldable.Components;
 using Content.Shared._Metro14.Cestoid;
 
 namespace Content.Server._Metro14.Cestoid;
@@ -22,6 +30,9 @@ public sealed class CestoidSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobStateSystem = default!;
     [Dependency] private readonly MobThresholdSystem _mobThresholdSystem = default!;
     [Dependency] private readonly SharedActionsSystem _actionsSystem = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly SharedCameraRecoilSystem _recoil = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     public override void Initialize()
     {
@@ -29,7 +40,7 @@ public sealed class CestoidSystem : EntitySystem
 
         SubscribeLocalEvent<CestoidComponent, ComponentInit>(OnComponentInit);
         SubscribeLocalEvent<CestoidComponent, ComponentRemove>(OnComponentRemove);
-
+        SubscribeLocalEvent<CestoidComponent, WieldAttemptEvent>(OnWieldAttempt);
         SubscribeLocalEvent<CestoidComponent, CestoidInfectionActionEvent>(OnCestoidInfectionActionPressed);
         SubscribeLocalEvent<CestoidComponent, CestoidShootingDownActionEvent>(OnCestoidShootingDownActionPressed);
     }
@@ -115,6 +126,27 @@ public sealed class CestoidSystem : EntitySystem
             _actionsSystem.RemoveAction((uid, actionsComp), component.CestoidShootingDownActionEntity);
 
         TrySetStandartTresholds(uid);
+    }
+
+    /// <summary>
+    /// Отменяем действие, если игрок пытается взять предмет в две руки.
+    /// </summary>
+    /// <param name="uid"> Ленточник </param>
+    /// <param name="component"> Компонент ленточника </param>
+    private void OnWieldAttempt(EntityUid uid, CestoidComponent component, ref WieldAttemptEvent args)
+    {
+        // args.User - кто пытается взять предмет  
+        // args.Wielded - предмет, который пытаются взять  
+        if (HasComp<WieldableComponent>(args.Wielded))
+        {
+            _popup.PopupEntity(Loc.GetString("cestoid-cant-wield-message"), uid, uid);
+
+            var direction = new Vector2((float)_random.NextDouble() * 2 - 1, (float)_random.NextDouble() * 2 - 1);
+            var intensity = 0.5f;
+            _recoil.KickCamera(uid, direction * intensity);
+
+            args.Cancel();
+        }
     }
 
     /// <summary>
