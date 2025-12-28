@@ -34,9 +34,6 @@ space_wind = false
 [ooc]
 enable_during_round = false
 
-[hub]
-advertise = false
-
 [netres]
 limit = 25.0
 
