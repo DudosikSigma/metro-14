@@ -12,9 +12,6 @@ round_restart_time = 240
 secret_weight_prototype = "Metro14Default"
 contraband_examine = false
 
-[shuttle]
-auto_call_time = 0
-
 [infolinks]
 discord = "https://discord.gg/nC9pFqH2"
 patreon = "https://boosty.to/ssglobeshow"
@@ -26,6 +23,7 @@ time = 1.0
 auto_call_time = 470
 emergency = false
 arrivals = false
+auto_call_time = 0
 
 [ic]
 flavor_text = true
