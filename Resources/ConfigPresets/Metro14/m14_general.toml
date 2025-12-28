@@ -20,7 +20,6 @@ patreon = "https://boosty.to/ssglobeshow"
 time = 1.0
 
 [shuttle]
-auto_call_time = 470
 emergency = false
 arrivals = false
 auto_call_time = 0
