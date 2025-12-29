@@ -1,12 +1,12 @@
 - type: entity
-  name: torch
+  name: Факел
   parent: BaseItem
-  id: Torch
-  description: A torch fashioned from some wood.
+  id: M14Torch
+  description: Факел из дерева
   components:
     - type: ExpendableLight
       refuelMaterialID: WoodPlank
-      glowDuration: 100
+      glowDuration: 110
       refuelMaximumDuration: 205
       fadeOutDuration: 4
       iconStateSpent: torch_spent
@@ -30,6 +30,9 @@
     - type: Icon
       sprite: Objects/Misc/torch.rsi
       state: icon
+    - type: Construction
+      graph: M14Torch1
+      node: m14torch
     - type: Item
       sprite: Objects/Misc/torch.rsi
       heldPrefix: unlit
@@ -50,22 +53,22 @@
           interpolate: Nearest
           minDuration: 0.02
           maxDuration: 0.06
-          startValue: 6.0
-          endValue: 9.0
+          startValue: 4.0
+          endValue: 7.0
           property: Energy
           isLooped: true
         - !type:FadeBehaviour # have the radius start small and get larger as it starts to burn
           id: turn_on
           maxDuration: 8.0
           startValue: 1.0
-          endValue: 6.0
+          endValue: 7.0
         - !type:RandomizeBehaviour # weaker flicker as it fades out
           id: fade_out
           interpolate: Nearest
           minDuration: 0.02
           maxDuration: 0.06
           startValue: 4.0
-          endValue: 8.0
+          endValue: 7.0
           property: Energy
           isLooped: true
         - !type:FadeBehaviour # fade out radius as it burns out
@@ -76,3 +79,31 @@
     - type: Tag
       tags:
       - Torch
+
+
+- type: construction
+  id: M14Torch1
+  graph: M14Torch1
+  startNode: start
+  targetNode: m14torch
+  category: construction-category-tools
+  objectType: Item
+
+
+- type: constructionGraph
+  id: M14Torch1
+  start: start
+  graph:
+    - node: start
+      edges:
+        - to: m14torch
+          steps:
+            - material: M14WoodPlank
+              amount: 3
+              doAfter: 3
+            - material: M14Cloth
+              amount: 1
+              doAfter: 1
+    - node: m14torch
+      entity: M14Torch
+
