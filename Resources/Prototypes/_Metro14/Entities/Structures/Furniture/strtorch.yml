@@ -1,7 +1,7 @@
 - type: entity
   name: факел
   parent: BaseStructure
-  id: M14Torch
+  id: M14StructureTorch
   description: стоячий факел.
   components:
     - type: ExpendableLight
