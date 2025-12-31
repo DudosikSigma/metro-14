@@ -34,7 +34,7 @@
       sprite: Objects/Misc/torch.rsi
       heldPrefix: unlit
     - type: Construction
-      graph: LightTorch
+      graph: StrTorch
       node: torch
     - type: Appearance
     - type: PointLight
